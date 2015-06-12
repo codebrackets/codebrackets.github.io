@@ -1,14 +1,6 @@
-## Contents
-
-- [x] Debugging your JavaScript running on other domains.
-- [x] Running Custom JavaScript on other domains. (Include console approach and tell the execution of JS)
-- [x] Modifying Query Parameters
-- [x] Writing Front End Code dependent on API even if they are not in place.
-- [] Modifying Request and Response Headers
-- [x] Ensuring third party libraries do not block your website.
-- [] Modifying and Blocking cookies on some Domain.
-- [] Removing Iframe security headers.
-- [] Tips and Tricks (Bookmarks, Block Time Killing Websites)
+<center>
+  <h1><u> HTTP Request Debugging - Tips & Tricks</u></h1>
+</center>
 
 ## Audience
 This Article will be most beneficial to Web Developers using Google Chrome. Other readers can enjoy different techniques and the approaches you can use to solve similar issues.
@@ -24,27 +16,27 @@ In this article, I will be sharing few tips and tricks of HTTP Request Manipulat
 3. Modify Query Parameters in a URL.
 4. Work on front end Code when APIs are not in place.
 5. Ensure the impact of slow (or no) loading of external script on your webpage.
-6. Block a cookie for a particular domain.
-7. Bypass Iframe Security headers for a particular website.
+6. Bypass Iframe Security headers for a particular website.
 
-In the end I will wrap up with some tricks I use everyday.
+Let's travel the road of HTTP Debugging Tips and Tricks.
 
 ### Tip 1: Debug your javascript code running on Customer's website.
 
 #### Scenario
-Suppose you have created a script to Insert Share buttons on a webpage. Users downloaded your javascript, hosted it on their server and included on their webpage. Consider your script is throwing some errors on a particular User website and you manage to have a fix ready for it. Since your script is running on other domain which obviously you can not control, how would you verify that your fix will run perfectly next time User performs the same steps (Download latest version, Host the latest and include on webpage).
+Suppose you have created a script to Insert Share buttons on a webpage. Users downloaded your javascript, hosted it on their server and included on their webpage. Consider your script is throwing some errors on a particular User website and you manage to have a fix ready for it. Since your script is running on other domain which obviously you can not control, how would you verify that your fix will run perfectly when user takes the new script with your fix.
 
 #### Trick A: Redirect URL Mechanism
 All you need is to redirect the URL of script present on website with the URL of script on your localhost where you made the fix.
 
-#### Tools: There are many Browser Extensions using which you can redirect an HTTP(s) URL.
+#### Tools: 
+There are many Browser Extensions using which you can redirect an HTTP(s) URL.
 
 1. Chrome Browser: [Requestly](chrome.google.com/webstore/detail/requestly/mdnleldcmiljblolnjhpnblkcekpdkpa),
 [Switcheroo Redirector](https://chrome.google.com/webstore/detail/switcheroo-redirector/cnmciclhnghalnpfhhleggldniplelbg?hl=en)
 
 2. Firefox browser: [Redirector](https://addons.mozilla.org/en-us/firefox/addon/redirector/) (But it only works till certain Firefox version)
 
-3. Windows/Mac Platform: Charles Proxy and Fiddler.
+3. Windows/Mac Platform: [Charles Proxy](http://www.charlesproxy.com/) and [Fiddler](http://www.telerik.com/fiddler)
 
 #### Example: Using Requestly Chrome Extension
 
@@ -53,7 +45,7 @@ All you need is to redirect the URL of script present on website with the URL of
 #### Note: 
 If you redirect an HTTPS script to HTTP script on a secure website then your browser will block the http script with an indicator in Address bar. You need to Enable [Mixed Content](http://www.howtogeek.com/181911/htg-explains-what-exactly-is-a-mixed-content-warning/) to load http script on secure pages.
 
-There are lots of scenarios where you need "Redirect" approach without having permissions to modify the actual website. 
+There are lots of scenarios where you can use "Redirect" approach without having permissions to modify the actual website. 
 
 ### Tip 2: Running Custom Javascript on a website.
 
@@ -92,6 +84,7 @@ Suppose I want to extract the username on [my profile tab of StackOverflow Page]
 ![Stackoverflow Profile Page Code Execution](http://codebrackets.github.io/articles/01-http-request-debugging/images/StackOverlow_Code_execution.png)
 
 This approach is easy but it comes with certain limitations. Couple of points should be observed.
+
 1. Code is executed after all the scripts have been executed and DOM is also loaded
 2. Any modification done in DOM by this code would not persist. As soon as you reload the page you need to execute the same script again to get back those changes.
 
@@ -106,7 +99,7 @@ This approach is very handy while giving demo to customers who have not bought y
 ### Tip 3: Modifying Query Parameters in HTTP Request URL
 
 #### Scenario
-Suppose your website's behavior is affected by the query parameters present in the URL. For example, Adding debug=true query parameter to URL starts printing logs in the browser console as User takes some actions. Now you want to add this query Parameter always as you navigate pages of your website.
+Suppose your website's behavior is affected by the query parameters present in the URL. For example, Adding `debug=true` query parameter to URL starts printing logs in the browser console as User takes some actions. Now you want to add this query Parameter always as you navigate pages of your website.
 
 #### Trick A: Manually modifying/adding `debug=true` parameter and reloading the page.
 This trick works good if you don't need to navigate to any other page. 
@@ -154,3 +147,38 @@ You can use Requestly block URL mechanism in order to block certain scripts. Now
 
 #### Example: Requestly - Block URL Mechanism
 ![Requestly Cancel Rule Example](http://codebrackets.github.io/articles/01-http-request-debugging/images/Requestly-Cancel-Rule-Example.png)
+ 
+### Tip 6: Modifying HTTP Request and Response Headers
+
+#### Secario
+
+A. Suppose you want to open a webpage in Iframe. Due to various security issues like Click Jacking and XSS, Most of the secure websites has certain Iframe busting criteria. If webpage has used `X-Frame-Options` header in order to bust iframes. 
+
+Trick: You can easily bypass that by removing the header.
+
+B. Suppose you need to render Cross Domain AJAX response but your browser blocks it.
+
+Trick: You can easily bypass this by adding `Access-Control-Allow-Origin` header in the response and set its value to `*`.
+
+C. Suppose you want to change the referrer to test something on your website.
+
+Trick: Modify Request header to update the value of referrer.
+
+#### Tools
+1. Firefox: [Modify Headers](https://addons.mozilla.org/en-us/firefox/addon/modify-headers/)
+2. Firefox: [Modify Response headers](https://addons.mozilla.org/en-us/firefox/addon/modify-response-headers/)
+3. Chrome: [Modify headers for Google Chrome](https://chrome.google.com/webstore/detail/modify-headers-for-google/innpjfdalfhpcoinfnehdnbkglpmogdi)
+4. Chrome: [Requestly](https://chrome.google.com/webstore/detail/requestly/mdnleldcmiljblolnjhpnblkcekpdkpa)
+
+#### Example
+
+![Requestly Headers Rule Example](http://codebrackets.github.io/articles/01-http-request-debugging/images/Requestly-Headers-Rule-Example.webp)
+
+#### Conclusion
+This mostly concludes the list of Tips and Tricks of HTTP Request Debugging.
+I just intended to provide you various scenarios and tips/tricks to help yourself in that scenario.
+There are lots of tools available on the web to achieve the same thing.
+I just preferred giving example of Requeslty because I am most comfortable using it.
+
+If you have any questions or suggestions, please let me know on [Twitter](https://twitter.com/sachinjain024)
+or via comments below.   
