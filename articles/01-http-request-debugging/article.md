@@ -172,7 +172,7 @@ Trick: Modify Request header to update the value of referrer.
 
 #### Example
 
-![Requestly Headers Rule Example](http://codebrackets.github.io/articles/01-http-request-debugging/images/Requestly-Headers-Rule-Example.webp)
+![Requestly Headers Rule Example](http://codebrackets.github.io/articles/01-http-request-debugging/images/Requestly-Headers-Rule-Example.png)
 
 #### Conclusion
 This mostly concludes the list of Tips and Tricks of HTTP Request Debugging.
